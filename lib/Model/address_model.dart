@@ -48,6 +48,7 @@ class AddressModel {
     latitude = json['latitude'];
     longitude = json['longitude'];
     isBilling = json['is_billing'];
+
   }
 
   Map<String, dynamic> toJson() {
