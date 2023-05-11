@@ -1,20 +1,21 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:core_project/Utill/Comman.dart';
+import 'package:core_project/Utill/Local_User_Data.dart';
+import 'package:core_project/helper/Route_Manager.dart';
+import 'package:core_project/helper/app_constants.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../Model/user_info_model.dart';
- import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
-import '../Utill/Comman.dart';
-import '../Utill/Local_User_Data.dart';
-import '../helper/Route_Manager.dart';
-import '../helper/app_constants.dart';
+ 
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 
 class LoginProvider extends ChangeNotifier {
-
 
   TextEditingController phoneController = TextEditingController();
   double screenHeight = 0;
@@ -28,14 +29,26 @@ class LoginProvider extends ChangeNotifier {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   bool state = false;
   bool loading = false;
-
+  /// sign Out With Google
   Future signOutWithGoogle(context) async {
     await FirebaseAuth.instance.signOut();
     await googleSignIn.signOut().then((value) {
       logout();
-      Navigator.pushNamedAndRemoveUntil(
-          context, Routes.loginRoute, (Route<dynamic> route) => false);
+      pushNamedAndRemoveUntil(context: context, route:  Routes.loginRoute);
     });
+  } 
+  /// sign In With Apple
+  Future<void> signOutWithApple(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      logout();
+      pushNamedAndRemoveUntil(context:context,route: Routes.loginRoute,);
+    } catch (e) {
+       talker.error('Error signing out with Apple: $e');
+       ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error signing out with Apple. Please try again.')),
+      );
+    }
   }
   /// Send OTP TO PHONE USER
   Future<void> verifyPhone(String number, context) async {
@@ -68,17 +81,16 @@ class LoginProvider extends ChangeNotifier {
             notifyListeners();
           },
         );
-        Navigator.pop(context);
+        pop(context:context);
         loading = false;
         notifyListeners();
       } catch (e) {
-        Navigator.pop(context);
+        pop(context:context);
 
         toast(e.toString());
       }
     } else {
-      Navigator.pop(context);
-
+      pop(context:context);
       toast(AppConstants.errorInternetNotAvailable);
     }
   }
@@ -101,10 +113,10 @@ class LoginProvider extends ChangeNotifier {
             if (state == true) {
               saveUserData(value);
               notifyListeners();
-              Navigator.pop(context);
-              await Navigator.pushReplacementNamed(context, Routes.tabBarRoute);
+              pop(context:context);
+              await pushReplacementNamed(context:context, route:Routes.tabBarRoute);
             } else {
-              Navigator.pop(context);
+              pop(context:context);
               // Navigator.of(context).push(MaterialPageRoute(
               //     builder: (context) => RegisterScreen(
               //         email: "${phoneController.text}@phone.com")));
@@ -112,12 +124,12 @@ class LoginProvider extends ChangeNotifier {
           });
         });
       } catch (e) {
-        Navigator.pop(context);
+        pop(context:context);
 
         toast("الرقم غير صحيح !!");
       }
     } else {
-      Navigator.pop(context);
+      pop(context:context);
 
       toast(AppConstants.errorInternetNotAvailable);
     }
@@ -125,15 +137,14 @@ class LoginProvider extends ChangeNotifier {
   /// loginWithGoogle
   Future<User?> loginWithGoogle({required BuildContext context}) async {
     if (await isNetworkAvailable()) {
+
       showLoadingDialog(context,"من فضلك انتظر");
       FirebaseAuth auth = FirebaseAuth.instance;
       User? user;
       final GoogleSignIn googleSignIn = GoogleSignIn();
-      final GoogleSignInAccount? googleSignInAccount =
-          await googleSignIn.signIn();
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
       if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
+        final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
         final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleSignInAuthentication.accessToken,
           idToken: googleSignInAuthentication.idToken,
@@ -147,18 +158,14 @@ class LoginProvider extends ChangeNotifier {
               user = userCredential.user;
               saveUserData(value);
               notifyListeners();
-              Navigator.pop(context);
-              await Navigator.pushReplacementNamed(context, Routes.tabBarRoute);
+              pop(context:context);
+              await pushReplacementNamed(context:context,route: Routes.tabBarRoute);
             } else {
-              Navigator.pop(context);
-
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (context) =>
-              //         RegisterScreen(email: googleSignIn.currentUser!.email)));
+              pop(context:context);
             }
           });
         } on FirebaseAuthException catch (e) {
-          Navigator.pop(context);
+          pop(context:context);
 
           if (e.code == 'account-exists-with-different-credential') {
             toast(
@@ -171,7 +178,7 @@ class LoginProvider extends ChangeNotifier {
             );
           }
         } catch (e) {
-          Navigator.pop(context);
+          pop(context:context);
 
           toast(
             e.toString(),
@@ -181,11 +188,137 @@ class LoginProvider extends ChangeNotifier {
 
       return user;
     } else {
-      Navigator.pop(context);
+      pop(context:context);
 
       toast(AppConstants.errorInternetNotAvailable);
     }
+    return null;
 
+  }
+  /// login With Apple
+  Future<User?> loginWithApple({required BuildContext context}) async {
+    if (await isNetworkAvailable()) {
+      FirebaseAuth auth = FirebaseAuth.instance;
+
+      showLoadingDialog(context, "Please wait...");
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        webAuthenticationOptions: WebAuthenticationOptions(
+          // Set the `clientId` and `redirectUri` to the values obtained during the Apple developer registration
+          clientId: 'your_client_id',
+          redirectUri: Uri.parse('your_redirect_uri'),
+        ),
+      );
+      try {
+        final OAuthProvider oAuthProvider =
+        OAuthProvider('apple.com');
+        final AuthCredential authCredential = oAuthProvider.credential(
+          idToken: credential.identityToken,
+          accessToken: credential.authorizationCode,
+        );
+        User? user;
+        if (user != null) {
+
+          getUserStatus(email: credential.email!).then((value) async {
+            if (state == true) {
+              final UserCredential userCredential = await auth.signInWithCredential(authCredential);
+              user = userCredential.user;
+              saveUserData(value);
+              notifyListeners();
+              pop(context:context);
+              await pushReplacementNamed(context:context,route: Routes.tabBarRoute);
+            } else {
+              pop(context:context);
+            }
+          });
+        }
+        return user;
+      } on FirebaseAuthException catch (e) {
+        pop(context:context);
+        if (e.code == 'account-exists-with-different-credential') {
+          toast(
+            "account-exists-with-different-credential",
+          );
+        } else if (e.code == 'invalid-credential') {
+          toast(
+            "invalid-credential",
+          );
+        }
+      } catch (e) {
+        pop(context:context);
+        toast(
+          e.toString(),
+        );
+      }
+    } else {
+      pop(context:context);
+      toast(AppConstants.errorInternetNotAvailable);
+    }
+    return null;
+  }
+  /// login with facebook
+  Future<User?> loginWithFacebook({required BuildContext context}) async {
+    if (await isNetworkAvailable()) {
+
+      showLoadingDialog(context, "Please wait...");
+      try {
+        final LoginResult result = await FacebookAuth.instance.login();
+        User? user;
+        if (result.status == LoginStatus.success) {
+           final AccessToken accessToken = result.accessToken!;
+          final AuthCredential authCredential = FacebookAuthProvider.credential(accessToken.token);
+
+          await FirebaseAuth.instance.signInWithCredential(authCredential).then((credential) {
+            user = credential.user;
+            if (user != null) {
+              getUserStatus(email: user!.email!).then((value) async {
+                if (state == true) {
+                  final UserCredential userCredential = await value.signInWithCredential(authCredential);
+                  user = userCredential.user;
+                  saveUserData(value);
+                  notifyListeners();
+                  pop(context:context);
+                  await pushReplacementNamed(context:context,route: Routes.tabBarRoute);
+                } else {
+                  pop(context:context);
+                }
+              });
+            }
+          });
+
+          return user;
+        } else if (result.status == LoginStatus.cancelled) {
+          pop(context:context);
+          toast("Login cancelled by user");
+        } else {
+          pop(context:context);
+          toast("Error logging in with Facebook");
+        }
+      } on FirebaseAuthException catch (e) {
+        pop(context:context);
+        if (e.code == 'account-exists-with-different-credential') {
+          toast(
+            "account-exists-with-different-credential",
+          );
+        } else if (e.code == 'invalid-credential') {
+          toast(
+            "invalid-credential",
+          );
+        }
+      } catch (e) {
+        pop(context:context);
+        toast(
+          e.toString(),
+        );
+      }
+    } else {
+      pop(context:context);
+      toast(AppConstants.errorInternetNotAvailable);
+    }
+    return null;
   }
   ///  getUserStatus
   Future getUserStatus({required String email}) async {

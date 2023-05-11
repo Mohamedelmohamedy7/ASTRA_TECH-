@@ -1,5 +1,4 @@
-
-class AppConstants {
+ class AppConstants {
   static const String APP_NAME = '6valley';
   static const String APP_VERSION = '12.1';
   static const String BASE_URL = 'https://6valley.6amtech.com';

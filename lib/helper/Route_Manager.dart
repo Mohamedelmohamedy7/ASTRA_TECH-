@@ -1,6 +1,9 @@
-
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../Provider/theme_provider.dart';
+import '../Screen/LoginScreen.dart';
+import '../Screen/SplashScreen.dart';
 
 class Routes {
   static const String splashRoute = "/";
@@ -29,42 +32,42 @@ class Routes {
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
-    //   case Routes.splashRoute:
-    //     return MaterialPageRoute(builder: (_) => const SplashScreen());
-    //   case Routes.myLocation:
-    //     return MaterialPageRoute(builder: (_) => const MyLocationScreen());
-    //   case Routes.languageRoute:
-    //     return MaterialPageRoute(builder: (_) => const LanguageScreen());
-    //   case Routes.updateSettingRoute:
-    //     return MaterialPageRoute(builder: (_) => const UpdateScreen());
-    //   case Routes.noInternetScreenRoute:
-    //     return MaterialPageRoute(builder: (_) => const NoInternetScreen());
-    //   case Routes.cartRoute:
-    //     return MaterialPageRoute(builder: (_) => const CartScreen());
-    //   case Routes.loginRoute:
-    //     return MaterialPageRoute(builder: (_) =>   LoginScreen());
-    //   case Routes.onBoardingRoute:
-    //     return MaterialPageRoute(builder: (_) => const OnBoardingScreen());
-    //   case Routes.categoriesRoute:
-    //     return MaterialPageRoute(builder: (_) =>   CategoriesScreen(type: 0,));
-    //   case Routes.verifyRoute:
-    //     return MaterialPageRoute(builder: (_) => const VertifyScreen());
-    //   case Routes.registerRoute:
-    //     return MaterialPageRoute(builder: (_) => const RegisterScreen(email: '',));
-    //   case Routes.homeRoute:
-    //     return MaterialPageRoute(builder: (_) => const HomeScreen());
-    //   case Routes.internalWelcomeRoute:
-    //     return MaterialPageRoute(builder: (_) => const WelcomInternal());
-    //   case Routes.welcomeRoute:
-    //     return MaterialPageRoute(builder: (_) => const WelcomeScreen());
-    //   case Routes.tabBarRoute:
-    //     return MaterialPageRoute(builder: (_) => const TabBarScreen());
-    //   case Routes.settingRoute:
-    //     return MaterialPageRoute(builder: (_) =>   SettingScreen());
-    // case Routes.favoriteRoute:
-    //     return MaterialPageRoute(builder: (_) => const FavoriteScreen());
-    //   case Routes.checkoutRoute:
-    //     return MaterialPageRoute(builder: (_) =>  CheckOutScreen());
+        case Routes.splashRoute:
+          return MaterialPageRoute(builder: (_) => const SplashScreen());
+      //   case Routes.myLocation:
+      //     return MaterialPageRoute(builder: (_) => const MyLocationScreen());
+      //   case Routes.languageRoute:
+      //     return MaterialPageRoute(builder: (_) => const LanguageScreen());
+      //   case Routes.updateSettingRoute:
+      //     return MaterialPageRoute(builder: (_) => const UpdateScreen());
+      //   case Routes.noInternetScreenRoute:
+      //     return MaterialPageRoute(builder: (_) => const NoInternetScreen());
+      //   case Routes.cartRoute:
+      //     return MaterialPageRoute(builder: (_) => const CartScreen());
+        case Routes.loginRoute:
+          return MaterialPageRoute(builder: (_) =>   LoginScreen());
+      //   case Routes.onBoardingRoute:
+      //     return MaterialPageRoute(builder: (_) => const OnBoardingScreen());
+      //   case Routes.categoriesRoute:
+      //     return MaterialPageRoute(builder: (_) =>   CategoriesScreen(type: 0,));
+      //   case Routes.verifyRoute:
+      //     return MaterialPageRoute(builder: (_) => const VertifyScreen());
+      //   case Routes.registerRoute:
+      //     return MaterialPageRoute(builder: (_) => const RegisterScreen(email: '',));
+      //   case Routes.homeRoute:
+      //     return MaterialPageRoute(builder: (_) => const HomeScreen());
+      //   case Routes.internalWelcomeRoute:
+      //     return MaterialPageRoute(builder: (_) => const WelcomInternal());
+      //   case Routes.welcomeRoute:
+      //     return MaterialPageRoute(builder: (_) => const WelcomeScreen());
+      //   case Routes.tabBarRoute:
+      //     return MaterialPageRoute(builder: (_) => const TabBarScreen());
+      //   case Routes.settingRoute:
+      //     return MaterialPageRoute(builder: (_) =>   SettingScreen());
+      // case Routes.favoriteRoute:
+      //     return MaterialPageRoute(builder: (_) => const FavoriteScreen());
+      //   case Routes.checkoutRoute:
+      //     return MaterialPageRoute(builder: (_) =>  CheckOutScreen());
       default:
         return unDefinedRoute();
     }
@@ -76,7 +79,21 @@ class RouteGenerator {
               appBar: AppBar(
                 title: const Text("No Route Found"),
               ),
-              body: const Center(child: Text("No Route Found")),
+              body: Builder(builder: (context) {
+                return GestureDetector(
+                    onTap: () {
+                      print(Provider.of<ThemeProvider>(context, listen: false)
+                          .darkTheme);
+                      Provider.of<ThemeProvider>(context, listen: false)
+                          .toggleTheme();
+                      print(Provider.of<ThemeProvider>(context, listen: false)
+                          .darkTheme);
+                    },
+                    child: Center(
+                        child: Text(
+                      "Carats".tr(),
+                    )));
+              }),
             ));
   }
 }

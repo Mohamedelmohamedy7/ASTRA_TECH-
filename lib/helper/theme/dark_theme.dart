@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 ThemeData dark = ThemeData(
   fontFamily: 'NewFonts',
-  primaryColor: Color(0xFF1B7FED),
+  primaryColor: const Color(0xFF2A160C),
   brightness: Brightness.dark,
   highlightColor: const Color(0xFF252525),
+  accentColor: const Color(0xFF99592A),
   hintColor: const Color(0xFFc7c7c7),
   colorScheme : const ColorScheme.dark(primary: Color(0xFF64BDF9),
     secondary: Color(0xFF78BDFC),

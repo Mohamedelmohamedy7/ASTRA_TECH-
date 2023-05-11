@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">My App</string>
     <string name="default_notification_channel_id">your channel id</string>
+    <string name="facebook_app_id">281101523870850</string>
+    <string name="facebook_client_token">281101523870850</string>
+    <string name="fb_login_protocol_scheme">fb281101523870850</string>
 </resources>

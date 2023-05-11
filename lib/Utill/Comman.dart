@@ -1,13 +1,13 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:core_project/helper/text_style.dart';
- import 'package:easy_localization/easy_localization.dart';
- import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
- import '../Model/user_info_model.dart';
- import '../Widget/ProcessingDialog.dart';
+import 'package:talker/talker.dart';
+import '../Model/user_info_model.dart';
+import '../Widget/ProcessingDialog.dart';
 import '../helper/ImagesConstant.dart';
 import '../helper/color_resources.dart';
 import 'Local_User_Data.dart';
@@ -52,46 +52,11 @@ Future<bool> isConnectedToWiFi() async {
   return connectivityResult == ConnectivityResult.wifi;
 }
 
-/// returns Image(Local,Network)
-Widget cachedImage(
-  String? url, {
-  double? height,
-  double? width,
-  BoxFit? fit,
-  AlignmentGeometry? alignment,
-  bool usePlaceholderIfUrlEmpty = true,
-}) {
-  if (url == null) {
-    return placeHolderWidget(
-        height: height, width: width, fit: fit, alignment: alignment);
-  } else if (url.startsWith('http')) {
-    return CachedNetworkImage(
-      imageUrl: url,
-      height: height,
-      width: width,
-      fit: fit,
-      alignment: alignment as Alignment? ?? Alignment.center,
-      errorWidget: (_, s, d) {
-        return placeHolderWidget(
-            height: height, width: width, fit: fit, alignment: alignment);
-      },
-      placeholder: (_, s) {
-        if (!usePlaceholderIfUrlEmpty) return const SizedBox();
-        return placeHolderWidget(
-            height: height, width: width, fit: fit, alignment: alignment);
-      },
-    );
-  } else {
-    return Image.asset(url,
-        height: height,
-        width: width,
-        fit: fit,
-        alignment: alignment ?? Alignment.center);
-  }
-}
+
 
 Container ButtonContainer(
-    {required BuildContext context,
+    {
+    required BuildContext context,
     required String text,
     required double margin,
     required double height,
@@ -100,8 +65,6 @@ Container ButtonContainer(
     margin: EdgeInsets.symmetric(horizontal: margin),
     width: MediaQuery.of(context).size.width - decrease ,
     height: height,
-    // decoration: BoxDecoration(
-    //     color: ColorResources.getPrimary(context), borderRadius: BorderRadius.circular(15)),
     child: Center(
       child: Text(
         text.tr(),
@@ -112,13 +75,28 @@ Container ButtonContainer(
   );
 }
 
+final talker = Talker(
+
+  /// Your own observers to handle errors's exception's and log's
+  /// like Crashlytics or Sentry observer
+  observers: [],
+  settings:   TalkerSettings(
+    /// You can enable/disable all talker processes with this field
+    enabled: true,
+    /// You can enable/disable saving logs data in history
+    useHistory: true,
+    /// Length of history that saving logs data
+    maxHistoryItems: 1000,
+    /// You can enable/disable console logs
+    useConsoleLogs: true,
+  ),
+  /// Setup your implementation of logger
+  logger: TalkerLogger(),
+  ///etc...
+);
 /// returns place Holder Image (asset)
 
-Widget placeHolderWidget(
-    {double? height,
-    double? width,
-    BoxFit? fit,
-    AlignmentGeometry? alignment}) {
+Widget placeHolderWidget({double? height, double? width, BoxFit? fit, AlignmentGeometry? alignment}) {
   return Image.asset(
     ImagesConstants.plashHolder,
     height: height,
@@ -128,15 +106,15 @@ Widget placeHolderWidget(
   );
 }
 
-OutlineInputBorder borderStyle = const OutlineInputBorder(
-  borderRadius: BorderRadius.only(
+OutlineInputBorder borderStyle =  OutlineInputBorder(
+  borderRadius: const BorderRadius.only(
     topLeft: Radius.circular(16),
     topRight: Radius.circular(16),
     bottomLeft: Radius.circular(16),
     bottomRight: Radius.circular(16),
   ),
   borderSide: BorderSide(
-    color: ColorResources.GREY,
+    color:  Grey,
   ),
 );
 
@@ -169,8 +147,6 @@ bool condition(context) {
   return context.locale == const Locale('en', 'US');
 }
 
-
-
 showLoadingDialog(context, text) async {
   return showDialog(
     barrierDismissible: false,
@@ -182,4 +158,31 @@ showLoadingDialog(context, text) async {
     },
   );
 }
-
+/// pushNamedAndRemoveUntil Navigator
+pushNamedAndRemoveUntil({required context, required String route})async{
+ return await Navigator.of(context).pushNamedAndRemoveUntil(route, (route) => false);
+}
+/// pushRemoveUntil Navigator
+pushRemoveUntil({required context,required Widget route}){
+  return Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>route), (route) => false);
+}
+/// push Navigator
+push({required context,required Widget route}){
+  return Navigator.of(context).push(MaterialPageRoute(builder: (context)=>route));
+}
+/// pushReplacement Navigator
+pushReplacement({required context,required Widget route}){
+  return Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>route));
+}
+/// pushReplacementNamed Navigator
+pushReplacementNamed({required context,required String route}){
+  return Navigator.pushReplacementNamed(context,route);
+}
+/// pop Navigator
+pop({required context}){
+  if(Navigator.of(context).canPop()) {
+    return Navigator.of(context).pop();
+  }else{
+    talker.error("❌  No Route found for this material ");
+  }
+}

@@ -1,19 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CustomColors{
-  static Color darkGrey = const Color(0xFF424343);
-  static Color grey =const Color(0xFF929393);
-  static Color greyBg =const Color(0xFFF2F6FB);
-  static Color greyLight =const Color(0xFFededed);
-  static Color greyShimmer =const Color(0xFFe0e0e0);
-}
+import 'color_resources.dart';
+
 
 class CustomTextStyle {
   // ignore: prefer_const_constructors
   static TextStyle medium10Gray = TextStyle(
       fontFamily: 'NewFonts',
-      color: CustomColors.grey,
+      color: Grey,
       fontSize: 10,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.5
@@ -65,25 +60,25 @@ class CustomTextStyle {
 
   static TextStyle medium12Gray =  TextStyle(
       fontFamily: 'NewFonts',
-      color:CustomColors.grey,
+      color: Grey,
       fontSize: 12,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.5);
   static TextStyle medium14Gray =  TextStyle(
       fontFamily: 'NewFonts',
-      color:CustomColors.grey,
+      color: Grey,
       fontSize: 14,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.5);
   static TextStyle medium16Gray =  TextStyle(
       fontFamily: 'NewFonts',
-      color:CustomColors.grey,
+      color: Grey,
       fontSize: 16,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.5);
   static TextStyle extraBold18Gray =  TextStyle(
       fontFamily: 'NewFonts',
-      color:CustomColors.grey,
+      color: Grey,
       fontSize: 18,
       fontWeight: FontWeight.w700,
       letterSpacing: 0.5);
@@ -179,7 +174,7 @@ class CustomTextStyle {
       fontFamily: 'NewFonts',
       fontSize: 14,
       fontWeight: FontWeight.w400,
-      color:CustomColors.grey);
+      color: Grey);
   static TextStyle regular14Black = const TextStyle(
     fontFamily: 'NewFonts',
     fontSize: 14,
@@ -200,12 +195,12 @@ class CustomTextStyle {
       fontFamily: 'NewFonts',
       fontSize: 12,
       fontWeight: FontWeight.w400,
-      color:CustomColors.grey);
+      color: Grey);
   static TextStyle regular10Gray =  TextStyle(
       fontFamily: 'NewFonts',
       fontSize: 10,
       fontWeight: FontWeight.w400,
-      color:CustomColors.grey);
+      color: Grey);
 
   static TextStyle appBarTitle = const TextStyle(
       fontFamily: 'NewFonts',
