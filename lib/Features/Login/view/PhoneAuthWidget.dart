@@ -1,12 +1,11 @@
-import 'package:core_project/Features/Login/LoginController.dart';
- import 'package:core_project/Utill/Comman.dart';
+  import 'package:core_project/Utill/Comman.dart';
 import 'package:core_project/helper/color_resources.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:provider/provider.dart';
+
+import '../controller/LoginController.dart';
+
 
 class PhoneAuthWidget extends StatefulWidget {
   @override
@@ -69,7 +68,6 @@ class _PhoneAuthWidgetState extends State<PhoneAuthWidget> {
                   ),
                 ),
               ),
-            // : stateRegister(context),
 
         const SizedBox(
           height: 20,
@@ -146,64 +144,7 @@ class _PhoneAuthWidgetState extends State<PhoneAuthWidget> {
         });
   }
 
-  Widget stateRegister(context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 16,
-          ),
-          IntlPhoneField(
-            initialCountryCode: 'EG',
-            controller: controller.phoneController,
-            showCountryFlag: true,
-            dropdownTextStyle: const TextStyle(
-                color:BLACK, fontSize: 15, fontWeight: FontWeight.w500),
-            showDropdownIcon: false,
-            flagsButtonMargin: const EdgeInsets.only(left: 10, right: 10),
-            initialValue: controller.countryDial,
-            onCountryChanged: (country) {
-              controller.countryDial = "+${country.dialCode}";
-            },
-            decoration: InputDecoration(
-              counter: const SizedBox.shrink(),
-              // counterStyle: const TextStyle(
-              //     height: double.minPositive,
-              //     fontWeight: FontWeight.w500,
-              //     fontSize: 14),
-              errorStyle:
-                  const TextStyle(fontSize: 12.0, fontFamily: "headline1"),
-              hintText: "10000000000",
-              hintStyle: const TextStyle(
-                  color: GREY, fontSize: 16, fontWeight: FontWeight.w500),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: GREY),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: GREY),
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: GREY),
-              ),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: GREY)),
-              disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: GREY)),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+
 
   void showSnackBarText(String text, context) {
     ScaffoldMessenger.of(context).showSnackBar(

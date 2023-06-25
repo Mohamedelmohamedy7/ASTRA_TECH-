@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 
   const Color BLACK = Color(0xff000000);
+  const Color lightAccentText = Color(0xffB1A699);
+  const Color darkBgColor =Color(0xFF04324f);
   const Color WHITE = Color(0xffFFFFFF);
+  const Color CREAM = Color(0xffF5EADD);
+  const Color LIGHTBLACK = Color(0xFF403E3B);
+  const Color MASK = Color(0xff1A1D1F);
+ 
   const Color LIGHT_SKY_BLUE = Color(0xff8DBFF6);
   const Color HARLEQUIN = Color(0xff3FCC01);
   const Color CERISE = Color(0xffE2206B);
   const Color GREY = Color(0xffF1F1F1);
-  const Color RED = Color(0xFFD32F2F);
+  const Color RED = Color.fromARGB(255, 105, 35, 35);
+  const Color LIGHTRED = Color.fromARGB(255, 180, 29, 29);
   const Color YELLOW = Color(0xFFFFAA47);
   const Color HINT_TEXT_COLOR = Color(0xff9E9E9E);
   const Color GAINS_BORO = Color(0xffE6E6E6);
@@ -24,7 +31,18 @@ import 'package:flutter/material.dart';
   Color GreyLight =const Color(0xFFededed);
   Color GreyShimmer =const Color(0xFFe0e0e0);
 class ColorResources {
-
+  static Color primary = const Color(0xff155E7D);
+  static Color primaryByOpacity = const Color(0xff00ACC8);
+  static Color anotherTabBackGround = const Color(0xffE7F2FA);
+  static Color accent = const Color(0xff00577D);
+  static Color white =const Color(0xffFFFFFF);
+  static Color lightGreen = const Color(0xffD8FFF1);
+  static Color green = const Color(0xff04BE7B);
+  static Color lightGrey = const Color(0xffDFE1E8);
+  static Color mediumGrey = const Color(0xff7E8CA0);
+  static Color lightPink = const Color(0xffFEDEE8);
+  static Color pink = const Color(0xffFF619A);
+  static Color chartColor = const Color(0xffF3F4F4);
    static const Map<int, Color> colorMap = {
     50: Color(0x10192D6B),
     100: Color(0x20192D6B),

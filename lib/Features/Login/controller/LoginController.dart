@@ -6,12 +6,12 @@ import 'package:core_project/Utill/Comman.dart';
 import 'package:core_project/Utill/Local_User_Data.dart';
 import 'package:core_project/helper/Route_Manager.dart';
 import 'package:core_project/helper/app_constants.dart';
-import 'package:core_project/Model/user_info_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+
+import '../Model/user_info_model.dart';
 
 
 class LoginController extends GetxController {
@@ -82,7 +82,7 @@ class LoginController extends GetxController {
               saveUserData(data: Users.fromJson(value));
               phoneController.clear();
               Get.back();
-              await Get.to(() => SelectLocation());
+              await Get.to(() => SelectType());
             } else {
               Get.back();
               Get.to(() => RegisterScreen(
@@ -169,7 +169,7 @@ class LoginController extends GetxController {
               saveUserData(data: Users.fromJson(value));
               phoneController.clear();
               Get.back();
-              await Get.to(() => SelectLocation());
+              await Get.to(() => const SelectType());
             } else {
               Get.back();
               Get.to(() => RegisterScreen(

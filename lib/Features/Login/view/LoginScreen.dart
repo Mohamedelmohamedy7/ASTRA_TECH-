@@ -3,12 +3,12 @@
  import 'package:core_project/Features/Register/RegisterScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
- import '../../Utill/Comman.dart';
+ import '../../../Utill/Comman.dart';
+   import '../../../helper/ImagesConstant.dart';
+import '../../../helper/color_resources.dart';
+ import '../controller/LoginController.dart';
 import 'MediaAuthWidget.dart';
 import 'PhoneAuthWidget.dart';
-import '../../helper/ImagesConstant.dart';
-import '../../helper/color_resources.dart';
-import 'LoginController.dart';
 
 class LoginScreen extends StatelessWidget {
   final LoginController registerController = Get.put(LoginController());

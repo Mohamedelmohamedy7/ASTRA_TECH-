@@ -1,9 +1,9 @@
-import 'package:core_project/Features/Login/LoginController.dart';
-import 'package:core_project/helper/color_resources.dart';
+ import 'package:core_project/helper/color_resources.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
+import '../controller/LoginController.dart';
 
 
 class MediaAuthWidget extends StatelessWidget {

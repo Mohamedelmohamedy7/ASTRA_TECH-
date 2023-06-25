@@ -1,12 +1,11 @@
-import 'package:core_project/Screen/LoginScreen.dart';
-import 'package:core_project/Screen/RegisterScreen.dart';
-import 'package:core_project/Utill/Local_User_Data.dart';
+ import 'package:core_project/Utill/Local_User_Data.dart';
 import 'package:core_project/helper/color_resources.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import '../Features/IntroducePart/select_Type.dart';
-import '../Utill/Comman.dart';
-import '../helper/ImagesConstant.dart';
+import '../../Utill/Comman.dart';
+import '../../helper/ImagesConstant.dart';
+import '../IntroducePart/select_Type.dart';
+import '../Login/view/LoginScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,15 +17,14 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    /// support Notifications Dialogs
-    getNextScreen();
+     getNextScreen();
     super.initState();
   }
 
   getNextScreen() {
      Future.delayed(const Duration(seconds: 5), () {
       return globalAccountData.getLoginInState() == true
-          ? push(context: context, route: SelectLocation())
+          ? push(context: context, route: const SelectType())
           : push(
               context: context,
               route: LoginScreen(),
